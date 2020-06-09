@@ -31,6 +31,8 @@ class Enemy:
             self.enemyX_change = -4
             self.positionY += self.enemyY_change
 
+        return self.positionX, self.positionY
+
     def get_position(self):
         return self.positionX, self.positionY
 

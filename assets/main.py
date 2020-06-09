@@ -76,9 +76,10 @@ while running:
         if event.type == pygame.QUIT:
             running = False
 
-        enemy.move()
-        player.move(event)
-        slime.move(event, player.positionX)
+        enemy.update(screen)
+        player.update(screen, event)
+        slime.move(screen, event, player.positionX)
+
         # keystroke activation
         # if event.type == pygame.KEYDOWN:
         #     if event.key == pygame.K_LEFT:
@@ -111,17 +112,16 @@ while running:
         #         #     slimeY -= slimeY_change
         #
         #         # what to do if collision has occured
-        collision = has_collided(enemy.positionX,enemy.positionY,slime.positionX,slime.positionY)
-        if collision:
-             slime.slimeY = 480
-             slime.slime_state = "ready"
-             score += 1
-             print(score)
-             enemy.reset()
+
+        # collision = has_collided(enemy.positionX,enemy.positionY,slime.positionX,slime.positionY)
+        # if collision:
+        #      slime.slimeY = 480
+        #      slime.slime_state = "ready"
+        #      score += 1
+        #      print(score)
+        #      enemy.reset()
 
         player.check()
-        player.update(screen,event)
-        enemy.update(screen)
         pygame.display.update()
 
         # Flip everything to the display
