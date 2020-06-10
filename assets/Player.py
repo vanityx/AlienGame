@@ -19,15 +19,6 @@ class Player:
 
         self.playerX_change = int(playerX_change)
 
-        # if event.type == pygame.KEYDOWN:
-        #     if event.key == pygame.K_LEFT:
-        #         self.playerX_change = -8
-        #     if event.key == pygame.K_RIGHT:
-        #         self.playerX_change = 8
-        # if event.type == pygame.KEYUP:
-        #     if event.key == pygame.K_LEFT or event.key == pygame.K_RIGHT:
-        #         self.playerX_change = 0
-
     def check(self):
         self.positionX += self.playerX_change
         if self.positionX <= 0:

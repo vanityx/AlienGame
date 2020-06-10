@@ -1,3 +1,4 @@
+import math
 import pygame
 
 
@@ -29,3 +30,11 @@ class Slime:
             rect = self.slimeImg.get_rect()
             rect.center = (int(self.positionX), int(self.positionY))
             screen.blit(self.slimeImg, rect)
+
+    def has_collided(self, enemy):
+        distance = math.sqrt(math.pow(enemy.positionX - self.positionX, 2)) +\
+                   (math.pow(enemy.positionY - self.positionY, 2))
+        if distance < 27:
+            return True
+        else:
+            return False

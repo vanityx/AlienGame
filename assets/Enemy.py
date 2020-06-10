@@ -3,13 +3,9 @@ import random
 
 
 class Enemy:
-    enemyImg = pygame.image.load('ice-cream.png')
-    positionX = 0
-    positionY = 0
-    enemyX_change = 0
-    enemyY_change = 0
 
     def __init__(self, positionX, positionY):
+        self.enemyImg = pygame.image.load('ice-cream.png')
         self.positionX = positionX
         self.positionY = positionY
         self.enemyX_change = 2.5

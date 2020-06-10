@@ -23,11 +23,6 @@ icon = pygame.image.load('alien.png')
 pygame.display.set_icon(icon)
 
 # player
-# playerImg = pygame.image.load('alien2.png')
-# playerX = 370
-# playerY = 480
-# playerX_change = 0
-
 player = Player(400, 520)
 
 # enemy
@@ -36,33 +31,8 @@ enemy = Enemy(random.randint(0, 735), random.randint(50, 150))
 # slime
 slime = Slime(0, 480)
 
-# ready state - can't see slime on screen
-# fire state - slime is currently moving
-# slimeImg = pygame.image.load('slime.png')
-# slimeX = 0
-# slimeY = 480
-# slimeX_change = 0
-# slimeY_change = 10
-# slime_state = "ready"
-
+# scoreboard
 score = 0
-
-
-# def fire_slime(x, y):
-#     global slime_state
-#     x = int(x)
-#     y = int(y)
-#     slime_state = "fire"
-#     screen.blit(slimeImg, (x + 16, y + 10))
-
-
-def has_collided(enemyX, enemyY, slimeX, slimeY):
-    distance = math.sqrt(math.pow(enemyX - slimeX, 2)) + (math.pow(enemyY - slimeY, 2))
-    if distance < 27:
-        return True
-    else:
-        return False
-
 
 # game loop / makes sure everything appears
 running = True
@@ -94,46 +64,14 @@ while running:
     player.check()
     pygame.display.update()
 
-    # keystroke activation
-    # if event.type == pygame.KEYDOWN:
-    #     if event.key == pygame.K_LEFT:
-    #         playerX_change = -8
-    #     if event.key == pygame.K_RIGHT:
-    #         playerX_change = 8
-    #     if event.key == pygame.K_SPACE:
-    #         slimeX = playerX
-    #         fire_slime(slimeX, slimeY)
+    # what to do if collision has occurs
 
-    # if event.type == pygame.KEYUP:
-    #     if event.key == pygame.K_LEFT or event.key == pygame.K_RIGHT:
-    #         playerX_change = 0
-
-    # checking for boundaries so they don't go out of bounds
-    #         # player movement
-    #         # playerX += playerX_change
-    #         #
-    #         # if playerX <= 0:
-    #         #     playerX = 0
-    #         # elif playerX >= 736:
-    #         #     playerX = 736
-    #
-    #         # slime movement
-    #         # if slimeY <= 0:  # reset to value of 480 so it can be fired again
-    #         #     slimeY = 480
-    #         #     slime_state = "ready"
-    #         # if slime_state == "fire":
-    #         #     fire_slime(slimeX, slimeY)
-    #         #     slimeY -= slimeY_change
-    #
-    #         # what to do if collision has occured
-
-    # collision = has_collided(enemy.positionX,enemy.positionY,slime.positionX,slime.positionY)
-    # if collision:
-    #      slime.slimeY = 480
-    #      slime.slime_state = "ready"
-    #      score += 1
-    #      print(score)
-    #      enemy.reset()
+    collision = slime.has_collided(enemy)
+    if collision:
+        slime.slime_state = "ready"
+        score += 1
+        print(score)
+        enemy.reset()
 
     # Flip everything to the display
     pygame.display.flip()
