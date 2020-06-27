@@ -32,7 +32,14 @@ enemy = Enemy(random.randint(0, 735), random.randint(50, 150))
 slime = Slime(0, 480)
 
 # scoreboard
-score = 0
+score_value = 0
+font = pygame.font.Font('freesansbold.ttf', 32)
+textX = 10
+textY = 10
+
+def show_score(x,y):
+    score = font.render("Score: " + str(score_value),True, (255,255,255))
+    screen.blit(score, (x, y))
 
 # game loop / makes sure everything appears
 running = True
@@ -63,14 +70,15 @@ while running:
     enemy.update(screen)
     player.check()
     pygame.display.update()
+    show_score(textX, textY)
 
     # what to do if collision has occurs
 
     collision = slime.has_collided(enemy)
     if collision:
         slime.slime_state = "ready"
-        score += 1
-        print(score)
+        score_value += 1
+        print(score_value)
         enemy.reset()
 
     # Flip everything to the display

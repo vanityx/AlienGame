@@ -1,33 +1,43 @@
 import pygame
 import random
 
-
 class Enemy:
 
     def __init__(self, positionX, positionY):
-        self.enemyImg = pygame.image.load('ice-cream.png')
-        self.positionX = positionX
-        self.positionY = positionY
-        self.enemyX_change = 2.5
-        self.enemyY_change = 40
+        self.enemyImg = []
+        self.positionX = []
+        self.positionY = []
+        self.enemyX_change = []
+        self.enemyY_change = []
+        self.num_enemies = 6
+
+        for i in range(self.num_enemies):
+            self.enemyImg.append(pygame.image.load('ice-cream.png'))
+            self.positionX.append(positionX)
+            self.positionY.append(positionY)
+            self.enemyX_change.append(6)
+            self.enemyY_change.append(40)
 
     def update(self, screen):
         self.move()
-        x = int(self.positionX)
-        y = int(self.positionY)
-        screen.blit(self.enemyImg, (x, y))
+        for i in range(self.num_enemies):
+            x = int(self.positionX[i])
+            y = int(self.positionY[i])
+
+        screen.blit(self.enemyImg[i], (x, y))
 
     def move(self):
-        self.positionX += self.enemyX_change
 
-        if self.positionX <= 0:
-            self.enemyX_change = 4
-            self.positionY += self.enemyY_change
-        elif self.positionX >= 736:
-            self.enemyX_change = -4
-            self.positionY += self.enemyY_change
+        for i in range(self.num_enemies):
+            self.positionX[i] += self.enemyX_change[i]
+            if self.positionX[i] <= 0:
+                self.enemyX_change[i] = 4
+                self.positionY[i] += self.enemyY_change[i]
+            elif self.positionX[i] >= 736:
+                self.enemyX_change[i] = -4
+                self.positionY[i] += self.enemyY_change[i]
 
-        return self.positionX, self.positionY
+            return self.positionX[i], self.positionY[i]
 
     def get_position(self):
         return self.positionX, self.positionY

@@ -32,8 +32,9 @@ class Slime:
             screen.blit(self.slimeImg, rect)
 
     def has_collided(self, enemy):
-        distance = math.sqrt(math.pow(enemy.positionX - self.positionX, 2)) +\
-                   (math.pow(enemy.positionY - self.positionY, 2))
+        for i in range(enemy.num_enemies):
+            distance = math.sqrt(math.pow(enemy.positionX[i] - self.positionX, 2)) +\
+                       (math.pow(enemy.positionY[i] - self.positionY, 2))
         if distance < 27:
             return True
         else:
