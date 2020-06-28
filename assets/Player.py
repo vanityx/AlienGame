@@ -11,12 +11,11 @@ class Player:
         self.playerY_change = 40
 
     def update(self, screen):
-        rect = self.playerImg.get_rect()
+        rect = self.playerImg.get_rect(center=(int(self.positionX), int(self.positionY)))
         rect.center = (int(self.positionX), int(self.positionY))
         screen.blit(self.playerImg, rect)
 
     def move(self, playerX_change):
-
         self.playerX_change = int(playerX_change)
 
     def check(self):

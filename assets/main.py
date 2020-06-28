@@ -45,9 +45,14 @@ def show_score(x,y):
     score = font.render("Score: " + str(score_value),True, (255,255,255))
     screen.blit(score, (x, y))
 
-# def game_won_text():
-#     won_text = font.render("YOU WIN", True, (255, 255, 255))
-#     screen.blit(won_text, (200, 250))
+def check_score(score_value):
+    if score_value >= 3:
+        game_won_text()
+
+def game_won_text():
+    won_text = font.render("YOU WIN", True, (255, 255, 255))
+    rect = won_text.get_rect(center=(800 / 2, 600 / 2))
+    screen.blit(won_text, rect)
 
 def game_over_text():
     over_text = font.render("GAME OVER", True, (255, 255, 255))
@@ -78,24 +83,21 @@ while running:
                 player.move(0)
 
     slime.move()
-    player.check()
     slime.update(screen)
     player.update(screen)
     enemy.update(screen)
+    player.check()
     pygame.display.update()
     show_score(textX, textY)
+    check_score(score_value)
 
     # what to do if collision has occurs
-
     collision = slime.has_collided(enemy)
-    while collision:
+    if collision:
         slime.slime_state = "ready"
         score_value += 1
         print(score_value)
         enemy.reset()
-        # if score_value >= 10:
-        #     game_won_text()
-        #     break
 
     # Flip everything to the display
     pygame.display.flip()

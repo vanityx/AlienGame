@@ -21,7 +21,7 @@ class Enemy:
         screen.blit(self.enemyImg, (x, y))
 
     def move(self):
-        if self.positionY > 200:
+        if self.positionY > 440:
             self.positionY = 2000
             from assets.main import game_over_text
             game_over_text()
