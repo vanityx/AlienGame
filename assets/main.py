@@ -40,6 +40,7 @@ textY = 10
 # game text
 over_font = pygame.font.Font('freesansbold.ttf', 100)
 won_font = pygame.font.Font('freesansbold.ttf', 100)
+replay_font = pygame.font.Font('freesansbold.ttf', 20)
 
 
 def show_score(x, y):
@@ -50,28 +51,41 @@ def show_score(x, y):
 def check_score(score_value):
     if score_value >= 3:
         game_won_text()
-
-
-def game_won_text():
-    won_text = won_font.render("YOU WIN", True, (255, 255, 255))
-    rect = won_text.get_rect(center=(int(screen.get_width() / 2), int(screen.get_height() / 2)))
-    screen.blit(won_text, rect)
-
-
-def game_over_text():
-    over_text = over_font.render("GAME OVER", True, (255, 255, 255))
-    rect = over_text.get_rect(center=(int(screen.get_width() / 2), int(screen.get_height() / 2)))
-    screen.blit(over_text, rect)
+        return True
+    else:
+        return False
 
 
 def check_enemy_pos(enemy):
     if enemy.positionY > 200:
         enemy.positionY = 2000
         game_over_text()
+        return True
+    else:
+        return False
+
+
+def game_won_text():
+    won_text = won_font.render("YOU WIN", True, (255, 255, 255))
+    replay_text = replay_font.render("Press 'R' To Play Again", True, (255, 255, 255))
+    rect1 = won_text.get_rect(center=(int(screen.get_width() / 2), int(screen.get_height() / 2)))
+    rect2 = replay_text.get_rect(center=(int(screen.get_width() / 2), int(screen.get_height() / 2) + 70))
+    screen.blit(won_text, rect1)
+    screen.blit(replay_text, rect2)
+
+
+def game_over_text():
+    over_text = over_font.render("GAME OVER", True, (255, 255, 255))
+    replay_text = replay_font.render("Press 'R' To Play Again", True, (255, 255, 255))
+    rect1 = over_text.get_rect(center=(int(screen.get_width() / 2), int(screen.get_height() / 2)))
+    rect2 = replay_text.get_rect(center=(int(screen.get_width() / 2), int(screen.get_height() / 2) + 70))
+    screen.blit(over_text, rect1)
+    screen.blit(replay_text, rect2)
 
 
 # game loop / makes sure everything appears
 running = True
+game_ended = False
 while running:
 
     # RGB values
@@ -89,30 +103,37 @@ while running:
                 player.move(8)
             if event.key == pygame.K_SPACE:
                 slime.fire_slime(player.positionX, player.positionY)
+            if event.key == pygame.K_r:
+                game_ended = False
+                score_value = 0
         if event.type == pygame.KEYUP:
             if event.key == pygame.K_LEFT or event.key == pygame.K_RIGHT:
                 player.move(0)
 
-    slime.move()
-    slime.update(screen)
-    player.update(screen)
-    enemy.update(screen)
-    player.check()
-    pygame.display.update()
-    show_score(textX, textY)
-    check_score(score_value)
-    check_enemy_pos(enemy)
+    if not game_ended:
 
-    # what to do if collision has occurs
-    collision = slime.has_collided(enemy)
-    if collision:
-        slime.slime_state = "ready"
-        score_value += 1
-        print(score_value)
-        enemy.reset()
+        slime.move()
+        slime.update(screen)
+        player.update(screen)
+        enemy.update(screen)
+        player.check()
+        pygame.display.update()
+        show_score(textX, textY)
+        if check_score(score_value):
+            game_ended = True
+        if check_enemy_pos(enemy):
+            game_ended = True
 
-    # Flip everything to the display
-    pygame.display.flip()
+        # what to do if collision has occurs
+        collision = slime.has_collided(enemy)
+        if collision:
+            slime.slime_state = "ready"
+            score_value += 1
+            print(score_value)
+            enemy.reset()
 
-    # Ensure program maintains a rate of 60 frames per second
-    clock.tick(60)
+        # Flip everything to the display
+        pygame.display.flip()
+
+        # Ensure program maintains a rate of 60 frames per second
+        clock.tick(60)
