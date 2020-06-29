@@ -1,8 +1,15 @@
 import pygame
 import random
 
+# list of all 'enemies'
+# each enemy is added to this list, which is managed by a class called 'Group'
+enemy_list = pygame.sprite.Group()
 
-class Enemy:
+# this is a list of every sprite/enemy
+all_sprites_list = pygame.sprite.Group()
+
+
+class Enemy(pygame.sprite.Sprite):
 
     def __init__(self, positionX, positionY):
         self.enemyImg = pygame.image.load('ice-cream.png')
@@ -21,10 +28,6 @@ class Enemy:
         screen.blit(self.enemyImg, (x, y))
 
     def move(self):
-        if self.positionY > 440:
-            self.positionY = 2000
-            from assets.main import game_over_text
-            game_over_text()
 
         self.positionX += self.enemyX_change
         if self.positionX <= 0:
@@ -43,4 +46,3 @@ class Enemy:
     def reset(self):
         self.positionX = random.randint(0, 800)
         self.positionY = random.randint(50, 150)
-

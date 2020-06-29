@@ -1,7 +1,8 @@
 import math
 import pygame
 
-class Slime:
+
+class Slime(pygame.sprite.Sprite):
 
     def __init__(self, positionX, positionY):
         self.slimeImg = pygame.image.load('slime.png')
@@ -31,8 +32,8 @@ class Slime:
             screen.blit(self.slimeImg, rect)
 
     def has_collided(self, enemy):
-        distance = math.sqrt(math.pow(enemy.positionX - self.positionX, 2)) +\
-                    (math.pow(enemy.positionY - self.positionY, 2))
+        distance = math.sqrt(math.pow(enemy.positionX - self.positionX, 2)) + \
+                   (math.pow(enemy.positionY - self.positionY, 2))
         if distance < 27:
             return True
         else:

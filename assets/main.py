@@ -38,26 +38,37 @@ textX = 10
 textY = 10
 
 # game text
-over_font = pygame.font.Font('freesansbold.ttf', 64)
-won_font = pygame.font.Font('freesansbold.ttf', 64)
+over_font = pygame.font.Font('freesansbold.ttf', 100)
+won_font = pygame.font.Font('freesansbold.ttf', 100)
 
-def show_score(x,y):
-    score = font.render("Score: " + str(score_value),True, (255,255,255))
+
+def show_score(x, y):
+    score = font.render("Score: " + str(score_value), True, (255, 255, 255))
     screen.blit(score, (x, y))
+
 
 def check_score(score_value):
     if score_value >= 3:
         game_won_text()
 
+
 def game_won_text():
-    won_text = font.render("YOU WIN", True, (255, 255, 255))
-    rect = won_text.get_rect(center=(800 / 2, 600 / 2))
+    won_text = won_font.render("YOU WIN", True, (255, 255, 255))
+    rect = won_text.get_rect(center=(int(screen.get_width() / 2), int(screen.get_height() / 2)))
     screen.blit(won_text, rect)
 
+
 def game_over_text():
-    over_text = font.render("GAME OVER", True, (255, 255, 255))
-    rect = over_text.get_rect(center=(800/2, 600/2))
+    over_text = over_font.render("GAME OVER", True, (255, 255, 255))
+    rect = over_text.get_rect(center=(int(screen.get_width() / 2), int(screen.get_height() / 2)))
     screen.blit(over_text, rect)
+
+
+def check_enemy_pos(enemy):
+    if enemy.positionY > 200:
+        enemy.positionY = 2000
+        game_over_text()
+
 
 # game loop / makes sure everything appears
 running = True
@@ -90,6 +101,7 @@ while running:
     pygame.display.update()
     show_score(textX, textY)
     check_score(score_value)
+    check_enemy_pos(enemy)
 
     # what to do if collision has occurs
     collision = slime.has_collided(enemy)
