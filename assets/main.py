@@ -70,7 +70,7 @@ while running:
         slime.update(screen)
         player.update(screen)
         enemy.update(screen)
-        player.check()
+        player.check(screen)
         pygame.display.update()
         scoreboard.show_score(screen)
         if scoreboard.check_game_end(screen, enemy.positionY):

@@ -18,12 +18,15 @@ class Player:
     def move(self, playerX_change):
         self.playerX_change = int(playerX_change)
 
-    def check(self):
+    def check(self, screen):
+        screen_width = int(screen.get_width())
+        right_boundary = screen_width - 50
+        left_boundary = 50
         self.positionX += self.playerX_change
-        if self.positionX <= 0:
-            self.positionX = 0
-        elif self.positionX >= 736:
-            self.positionX = 736
+        if self.positionX <= left_boundary:
+            self.positionX = left_boundary
+        elif self.positionX >= right_boundary:
+            self.positionX = right_boundary
 
     def get_position(self):
         return self.positionX

@@ -38,3 +38,11 @@ class Slime(pygame.sprite.Sprite):
             return True
         else:
             return False
+
+    # def has_collided(self, spriteGroup):
+    #     if pygame.sprite.spritecollide(self, spriteGroup, False):
+    #         return True
+    #     else:
+    #         return False
+
+
