@@ -27,8 +27,13 @@ pygame.display.set_icon(icon)
 # player
 player = Player(400, 520)
 
-# enemy
-enemy = Enemy(random.randint(0, 735), random.randint(50, 150))
+# enemies
+enemy1 = Enemy(random.randint(0, int(screen.get_width())), random.randint(0, int(screen.get_height() / 2)))
+enemy2 = Enemy(random.randint(0, int(screen.get_width())), random.randint(0, int(screen.get_height() / 2)))
+enemy3 = Enemy(random.randint(0, int(screen.get_width())), random.randint(0, int(screen.get_height() / 2)))
+
+enemies = [enemy1, enemy2, enemy3]
+
 
 # slime
 slime = Slime(0, 480)
@@ -51,38 +56,40 @@ while running:
             running = False
         elif event.type == pygame.KEYDOWN:
             if event.key == pygame.K_LEFT:
-                player.move(-8)
+                player.move(-4)
             if event.key == pygame.K_RIGHT:
-                player.move(8)
+                player.move(4)
             if event.key == pygame.K_SPACE:
                 slime.fire_slime(player.positionX, player.positionY)
             if event.key == pygame.K_r:
                 game_ended = False
                 scoreboard.score_value = 0
-                enemy.reset()
+                for enemy in enemies:
+                    enemy.reset(screen)
         if event.type == pygame.KEYUP:
             if event.key == pygame.K_LEFT or event.key == pygame.K_RIGHT:
                 player.move(0)
 
     if not game_ended:
+        for enemy in enemies:
 
-        slime.move()
-        slime.update(screen)
-        player.update(screen)
-        enemy.update(screen)
-        player.check(screen)
-        pygame.display.update()
-        scoreboard.show_score(screen)
-        if scoreboard.check_game_end(screen, enemy.positionY):
-            game_ended = True
+            slime.move()
+            slime.update(screen)
+            player.update(screen)
+            enemy.update(screen)
+            player.check(screen)
+            pygame.display.update()
+            scoreboard.show_score(screen)
+            if scoreboard.check_game_end(screen, enemy.positionY):
+                game_ended = True
 
-        # what to do if collision has occurs
-        collision = slime.has_collided(enemy)
-        if collision:
-            slime.slime_state = "ready"
-            scoreboard.score_value += 1
-            print(scoreboard.score_value)
-            enemy.reset()
+            # what to do if collision has occurs
+            collision = slime.has_collided(enemy)
+            if collision:
+                slime.slime_state = "ready"
+                scoreboard.score_value += 1
+                print(scoreboard.score_value)
+                enemy.reset(screen)
 
         # Flip everything to the display
         pygame.display.flip()

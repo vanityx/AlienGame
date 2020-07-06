@@ -9,40 +9,50 @@ enemy_list = pygame.sprite.Group()
 all_sprites_list = pygame.sprite.Group()
 
 
-class Enemy(pygame.sprite.Sprite):
+class Enemy(object):
 
     def __init__(self, positionX, positionY):
-        self.enemyImg = pygame.image.load('ice-cream.png')
+        self.enemySprite = pygame.image.load('ice-cream.png')  # basic enemy sprite
         self.positionX = positionX
         self.positionY = positionY
+        self.width = int(self.enemySprite.get_width())
+        self.height = int(self.enemySprite.get_height())
         self.enemyX_change = 6
         self.enemyY_change = 40
-        self.num_enemies = 6
+        self.hitbox = (self.positionX, self.positionY, self.width, self.height)
+
 
     def update(self, screen):
-        self.move()
-        for i in range(self.num_enemies):
-            x = int(self.positionX)
-            y = int(self.positionY)
+        self.move(screen)
+        x = int(self.positionX)
+        y = int(self.positionY)
 
-        screen.blit(self.enemyImg, (x, y))
+        screen.blit(self.enemySprite, (x, y))
 
-    def move(self):
+        # show hitbox
+        self.hitbox = (self.positionX, self.positionY, self.width, self.height)
+        pygame.draw.rect(screen, (255, 0, 0), self.hitbox, 2)
+
+
+    def move(self, screen):
 
         self.positionX += self.enemyX_change
-        if self.positionX <= 0:
+        screen_width = int(screen.get_width())
+        right_boundary = screen_width - 20
+        left_boundary = 20
+        if self.positionX <= left_boundary:
             self.enemyX_change = 4
             self.positionY += self.enemyY_change
-        elif self.positionX >= 736:
+        if self.positionX >= right_boundary:
             self.enemyX_change = -4
             self.positionY += self.enemyY_change
 
-            return self.positionX, self.positionY
+        return self.positionX, self.positionY
 
     def get_position(self):
         return self.positionX, self.positionY
 
     # reset random position
-    def reset(self):
-        self.positionX = random.randint(0, 800)
-        self.positionY = random.randint(50, 150)
+    def reset(self, screen):
+        self.positionX = random.randint(0, int(screen.get_width()))
+        self.positionY = random.randint(0, int(screen.get_height() / 2))

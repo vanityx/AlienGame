@@ -2,14 +2,17 @@ import math
 import pygame
 
 
-class Slime(pygame.sprite.Sprite):
+class Slime(object):
 
     def __init__(self, positionX, positionY):
-        self.slimeImg = pygame.image.load('slime.png')
+        self.slimeSprite = pygame.image.load('slime.png') # basic projectile sprite
         self.positionX = positionX
         self.positionY = positionY
+        self.width = int(self.slimeSprite.get_width())
+        self.height = int(self.slimeSprite.get_height())
         self.slimeX_change = 0
-        self.slimeY_change = 10
+        self.slimeY_change = 5
+        self.hitbox = (self.positionX, self.positionY, self.width, self.height)
         self.slime_state = "ready"
 
     def move(self):
@@ -27,9 +30,13 @@ class Slime(pygame.sprite.Sprite):
 
     def update(self, screen):
         if self.slime_state == "fire":
-            rect = self.slimeImg.get_rect()
+            rect = self.slimeSprite.get_rect()
             rect.center = (int(self.positionX), int(self.positionY))
-            screen.blit(self.slimeImg, rect)
+            screen.blit(self.slimeSprite, rect)
+
+            # show hitbox
+            # self.hitbox = (self.positionX, self.positionY, self.width, self.height)
+            # pygame.draw.rect(screen, (255, 0, 0), self.hitbox, 2)
 
     def has_collided(self, enemy):
         distance = math.sqrt(math.pow(enemy.positionX - self.positionX, 2)) + \
@@ -38,11 +45,3 @@ class Slime(pygame.sprite.Sprite):
             return True
         else:
             return False
-
-    # def has_collided(self, spriteGroup):
-    #     if pygame.sprite.spritecollide(self, spriteGroup, False):
-    #         return True
-    #     else:
-    #         return False
-
-

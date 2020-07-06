@@ -31,7 +31,7 @@ class Scoreboard:
         if self.score_value >= 3:
             self.game_won_text(screen)
             return True
-        if enemy > 200:
+        if enemy > int(screen.get_height() - 200):
             self.game_over_text(screen)
             return True
 

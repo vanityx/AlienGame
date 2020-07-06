@@ -1,19 +1,19 @@
 import pygame
 
 
-class Player:
+class Player(object):
 
     def __init__(self, positionX, positionY):
-        self.playerImg = pygame.image.load('alien2.png')
+        self.playerSprite = pygame.image.load('alien2.png')
         self.positionX = positionX
         self.positionY = positionY
         self.playerX_change = 0
         self.playerY_change = 40
 
     def update(self, screen):
-        rect = self.playerImg.get_rect(center=(int(self.positionX), int(self.positionY)))
+        rect = self.playerSprite.get_rect(center=(int(self.positionX), int(self.positionY)))
         rect.center = (int(self.positionX), int(self.positionY))
-        screen.blit(self.playerImg, rect)
+        screen.blit(self.playerSprite, rect)
 
     def move(self, playerX_change):
         self.playerX_change = int(playerX_change)
