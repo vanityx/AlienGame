@@ -1,9 +1,9 @@
 import pygame
-import math
 import random
 from assets.Enemy import Enemy
 from assets.Player import Player
 from assets.Slime import Slime
+import Interface
 
 # initialise the pygame
 pygame.init()
@@ -32,55 +32,54 @@ enemy = Enemy(random.randint(0, 735), random.randint(50, 150))
 slime = Slime(0, 480)
 
 # scoreboard
-score_value = 0
-font = pygame.font.Font('freesansbold.ttf', 32)
-textX = 10
-textY = 10
-
-# game text
-over_font = pygame.font.Font('freesansbold.ttf', 100)
-won_font = pygame.font.Font('freesansbold.ttf', 100)
-replay_font = pygame.font.Font('freesansbold.ttf', 20)
-
-
-def show_score(x, y):
-    score = font.render("Score: " + str(score_value), True, (255, 255, 255))
-    screen.blit(score, (x, y))
+# score_value = 0
+# font = pygame.font.Font('freesansbold.ttf', 32)
+# textX = 10
+# textY = 10
+#
+# # game text
+# over_font = pygame.font.Font('freesansbold.ttf', 100)
+# won_font = pygame.font.Font('freesansbold.ttf', 100)
+# replay_font = pygame.font.Font('freesansbold.ttf', 20)
 
 
-def check_score(score_value):
-    if score_value >= 3:
-        game_won_text()
-        return True
-    else:
-        return False
-
-
-def check_enemy_pos(enemy):
-    if enemy.positionY > 200:
-        enemy.positionY = 2000
-        game_over_text()
-        return True
-    else:
-        return False
-
-
-def game_won_text():
-    won_text = won_font.render("YOU WIN", True, (255, 255, 255))
-    replay_text = replay_font.render("Press 'R' To Play Again", True, (255, 255, 255))
-    rect1 = won_text.get_rect(center=(int(screen.get_width() / 2), int(screen.get_height() / 2)))
-    rect2 = replay_text.get_rect(center=(int(screen.get_width() / 2), int(screen.get_height() / 2) + 70))
-    screen.blit(won_text, rect1)
-    screen.blit(replay_text, rect2)
-
-
-def game_over_text():
-    over_text = over_font.render("GAME OVER", True, (255, 255, 255))
-    replay_text = replay_font.render("Press 'R' To Play Again", True, (255, 255, 255))
-    rect1 = over_text.get_rect(center=(int(screen.get_width() / 2), int(screen.get_height() / 2)))
-    rect2 = replay_text.get_rect(center=(int(screen.get_width() / 2), int(screen.get_height() / 2) + 70))
-    screen.blit(over_text, rect1)
-    screen.blit(replay_text, rect2)
+# def show_score(x, y):
+#     score = font.render("Score: " + str(score_value), True, (255, 255, 255))
+#     screen.blit(score, (x, y))
+#
+#
+# def check_score(score_value):
+#     if score_value >= 3:
+#         game_won_text()
+#         return True
+#     else:
+#         return False
+#
+# def check_enemy_pos(enemy):
+#     if enemy.positionY > 200:
+#         enemy.positionY = 2000
+#         game_over_text()
+#         return True
+#     else:
+#         return False
+#
+#
+# def game_won_text():
+#     won_text = won_font.render("YOU WIN", True, (255, 255, 255))
+#     replay_text = replay_font.render("Press 'R' To Play Again", True, (255, 255, 255))
+#     rect1 = won_text.get_rect(center=(int(screen.get_width() / 2), int(screen.get_height() / 2)))
+#     rect2 = replay_text.get_rect(center=(int(screen.get_width() / 2), int(screen.get_height() / 2) + 70))
+#     screen.blit(won_text, rect1)
+#     screen.blit(replay_text, rect2)
+#
+#
+# def game_over_text():
+#     over_text = over_font.render("GAME OVER", True, (255, 255, 255))
+#     replay_text = replay_font.render("Press 'R' To Play Again", True, (255, 255, 255))
+#     rect1 = over_text.get_rect(center=(int(screen.get_width() / 2), int(screen.get_height() / 2)))
+#     rect2 = replay_text.get_rect(center=(int(screen.get_width() / 2), int(screen.get_height() / 2) + 70))
+#     screen.blit(over_text, rect1)
+#     screen.blit(replay_text, rect2)
 
 
 # game loop / makes sure everything appears
@@ -110,7 +109,7 @@ while running:
             if event.key == pygame.K_LEFT or event.key == pygame.K_RIGHT:
                 player.move(0)
 
-    if not game_ended:
+    if not interface.game_ended:
 
         slime.move()
         slime.update(screen)
@@ -118,18 +117,18 @@ while running:
         enemy.update(screen)
         player.check()
         pygame.display.update()
-        show_score(textX, textY)
-        if check_score(score_value):
-            game_ended = True
-        if check_enemy_pos(enemy):
-            game_ended = True
+        interface.show_score(textX, textY, screen)
+        if interface.check_score():
+            interface.game_ended = True
+        if interface.check_enemy_pos(enemy):
+            interface.game_ended = True
 
         # what to do if collision has occurs
         collision = slime.has_collided(enemy)
         if collision:
             slime.slime_state = "ready"
-            score_value += 1
-            print(score_value)
+            interface.score_value += 1
+            print(interface.score_value)
             enemy.reset()
 
         # Flip everything to the display
