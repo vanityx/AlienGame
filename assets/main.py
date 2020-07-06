@@ -1,9 +1,11 @@
-import pygame
 import random
+
+import pygame
+
 from assets.Enemy import Enemy
 from assets.Player import Player
 from assets.Slime import Slime
-import Interface
+from assets.Interface import Scoreboard
 
 # initialise the pygame
 pygame.init()
@@ -32,6 +34,8 @@ enemy = Enemy(random.randint(0, 735), random.randint(50, 150))
 slime = Slime(0, 480)
 
 # scoreboard
+scoreboard = Scoreboard()
+
 # score_value = 0
 # font = pygame.font.Font('freesansbold.ttf', 32)
 # textX = 10
@@ -104,12 +108,13 @@ while running:
                 slime.fire_slime(player.positionX, player.positionY)
             if event.key == pygame.K_r:
                 game_ended = False
-                score_value = 0
+                scoreboard.score_value = 0
+                enemy.reset()
         if event.type == pygame.KEYUP:
             if event.key == pygame.K_LEFT or event.key == pygame.K_RIGHT:
                 player.move(0)
 
-    if not interface.game_ended:
+    if not game_ended:
 
         slime.move()
         slime.update(screen)
@@ -117,18 +122,16 @@ while running:
         enemy.update(screen)
         player.check()
         pygame.display.update()
-        interface.show_score(textX, textY, screen)
-        if interface.check_score():
-            interface.game_ended = True
-        if interface.check_enemy_pos(enemy):
-            interface.game_ended = True
+        scoreboard.show_score(screen)
+        if scoreboard.check_game_end(screen, enemy.positionY):
+            game_ended = True
 
         # what to do if collision has occurs
         collision = slime.has_collided(enemy)
         if collision:
             slime.slime_state = "ready"
-            interface.score_value += 1
-            print(interface.score_value)
+            scoreboard.score_value += 1
+            print(scoreboard.score_value)
             enemy.reset()
 
         # Flip everything to the display
