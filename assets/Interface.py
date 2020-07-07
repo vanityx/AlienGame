@@ -1,15 +1,4 @@
-import random
 import pygame
-# from assets.Enemy import Enemy
-# from assets.Player import Player
-# from assets.Slime import Slime
-#
-# # player
-# player = Player(400, 520)
-# # enemy
-# enemy = Enemy(random.randint(0, 735), random.randint(50, 150))
-# # slime
-# slime = Slime(0, 480)
 
 
 class Scoreboard:

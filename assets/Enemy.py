@@ -1,26 +1,20 @@
 import pygame
 import random
 
-# list of all 'enemies'
-# each enemy is added to this list, which is managed by a class called 'Group'
-enemy_list = pygame.sprite.Group()
 
-# this is a list of every sprite/enemy
-all_sprites_list = pygame.sprite.Group()
-
-
-class Enemy(object):
+class Enemy(pygame.sprite.Sprite):
 
     def __init__(self, positionX, positionY):
+        pygame.sprite.Sprite.__init__(self)
         self.enemySprite = pygame.image.load('ice-cream.png')  # basic enemy sprite
         self.positionX = positionX
         self.positionY = positionY
         self.width = int(self.enemySprite.get_width())
         self.height = int(self.enemySprite.get_height())
+        self.rect = pygame.Rect(self.positionX, self.positionY, self.width, self.height)
         self.enemyX_change = 6
         self.enemyY_change = 40
         self.hitbox = (self.positionX, self.positionY, self.width, self.height)
-
 
     def update(self, screen):
         self.move(screen)
@@ -30,9 +24,8 @@ class Enemy(object):
         screen.blit(self.enemySprite, (x, y))
 
         # show hitbox
-        self.hitbox = (self.positionX, self.positionY, self.width, self.height)
-        pygame.draw.rect(screen, (255, 0, 0), self.hitbox, 2)
-
+        # self.hitbox = (self.positionX, self.positionY, self.width, self.height)
+        # pygame.draw.rect(screen, (255, 0, 0), self.hitbox, 2)
 
     def move(self, screen):
 
@@ -51,6 +44,10 @@ class Enemy(object):
 
     def get_position(self):
         return self.positionX, self.positionY
+
+    def get_enemy_rect(self):
+        self.rect = pygame.Rect(self.positionX, self.positionY, self.width, self.height)
+        return self.rect
 
     # reset random position
     def reset(self, screen):

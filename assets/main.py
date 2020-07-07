@@ -17,7 +17,7 @@ screen = pygame.display.set_mode((800, 600))
 clock = pygame.time.Clock()
 
 # add background image
-background = pygame.image.load('2399.png')
+background = pygame.image.load('background.png')
 
 # title and icon
 pygame.display.set_caption("Alien vs Ice Cream ")
@@ -31,9 +31,9 @@ player = Player(400, 520)
 enemy1 = Enemy(random.randint(0, int(screen.get_width())), random.randint(0, int(screen.get_height() / 2)))
 enemy2 = Enemy(random.randint(0, int(screen.get_width())), random.randint(0, int(screen.get_height() / 2)))
 enemy3 = Enemy(random.randint(0, int(screen.get_width())), random.randint(0, int(screen.get_height() / 2)))
+enemy4 = Enemy(random.randint(0, int(screen.get_width())), random.randint(0, int(screen.get_height() / 2)))
 
-enemies = [enemy1, enemy2, enemy3]
-
+enemies = [enemy1, enemy2, enemy3, enemy4]
 
 # slime
 slime = Slime(0, 480)
@@ -84,8 +84,8 @@ while running:
                 game_ended = True
 
             # what to do if collision has occurs
-            collision = slime.has_collided(enemy)
-            if collision:
+            enemy_rect = enemy.get_enemy_rect()
+            if slime.has_collided(enemy_rect):
                 slime.slime_state = "ready"
                 scoreboard.score_value += 1
                 print(scoreboard.score_value)
