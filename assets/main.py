@@ -83,6 +83,7 @@ while running:
         if player_input.restart_game:
             game_ended = False
             scoreboard.score_value = 0
+            player_input.restart_game = False
         else:
             player_input.controller_state = "null"
 
