@@ -41,4 +41,4 @@ class Enemy(pygame.sprite.Sprite):
     # reset random position
     def reset(self, screen):
         self.rect.x = random.randint(0, int(screen.get_width()))
-        self.rect.y = random.randint(0, int(screen.get_height() / 2))
+        self.rect.y = random.randint(0, int((screen.get_height() / 2) - 30))
