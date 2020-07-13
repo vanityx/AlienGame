@@ -41,33 +41,24 @@ class Scoreboard:
         screen.blit(replay_text, rect2)
 
 
-# class KeyboardInput:
-#     def __init__(self):
-#         self.game_running = True
-#         self.restart_game = False
-#
-#     def movement(self, event):
-#         for event in pygame.event.get():
-#             if event.type == pygame.QUIT:
-#                 self.game_running = False
-#             elif event.type == pygame.KEYDOWN:
-#                 if event.key == pygame.K_LEFT:
-#                     player.move(-8)
-#                 if event.key == pygame.K_RIGHT:
-#                     player.move(8)
-#                 if event.key == pygame.K_SPACE:
-#                     slime.fire_slime(player.positionX, player.positionY)
-#             if event.type == pygame.KEYUP:
-#                 if event.key == pygame.K_LEFT or event.key == pygame.K_RIGHT:
-#                     player.move(0)
-#
-#     def restart(self):
-#         for event in pygame.event.get():
-#             if event.type == pygame.KEYDOWN:
-#                 if event.key == pygame.K_r:
-#                     self.restart_game = True
-#             if event.type == pygame.KEYUP:
-#                 if event.key == pygame.K_LEFT or event.key == pygame.K_RIGHT:
-#                     player.move(0)
+class playerInput:
+    def __init__(self):
+        self.game_running = True
+        self.restart_game = False
+        self.controller_state = "null"
 
-# store a state in the controller, in the keyboard input class
+    def movement(self, event):
+        if event.type == pygame.QUIT:
+            self.game_running = False
+        elif event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_LEFT:
+                self.controller_state = "left"
+            if event.key == pygame.K_RIGHT:
+                self.controller_state = "right"
+            if event.key == pygame.K_SPACE:
+                self.controller_state = "space"
+            if event.key == pygame.K_r:
+                self.restart_game = True
+        if event.type == pygame.KEYUP:
+            if event.key == pygame.K_LEFT or event.key == pygame.K_RIGHT:
+                self.controller_state = "key_release"

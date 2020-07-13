@@ -12,7 +12,6 @@ class Enemy(pygame.sprite.Sprite):
         self.rect.y = positionY
         self.enemyX_change = 6
         self.enemyY_change = 40
-        self.hitbox = (self.rect.x, self.rect.y, self.rect.width, self.rect.height)
 
     def update(self, screen):
         self.move(screen)
@@ -20,10 +19,6 @@ class Enemy(pygame.sprite.Sprite):
         y = int(self.rect.y)
 
         screen.blit(self.image, (x, y))
-
-        # show hitbox
-        # self.hitbox = (self.rect.x, self.rect.y, self.width, self.height)
-        # pygame.draw.rect(screen, (255, 0, 0), self.hitbox, 2)
 
     def move(self, screen):
 

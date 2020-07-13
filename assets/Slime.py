@@ -1,4 +1,3 @@
-import math
 import pygame
 
 
@@ -12,7 +11,6 @@ class Slime(pygame.sprite.Sprite):
         self.rect.y = positionY
         self.slimeX_change = 0
         self.slimeY_change = 5
-        self.hitbox = (self.rect.x, self.rect.y, self.rect.width, self.rect.height)
         self.slime_state = "ready"
 
     def move(self):
@@ -34,10 +32,6 @@ class Slime(pygame.sprite.Sprite):
             x = int(self.rect.x)
             y = int(self.rect.y)
             screen.blit(self.image, (x, y))
-
-            # show hitbox
-            # self.hitbox = (self.positionX, self.positionY, self.width, self.height)
-            # pygame.draw.rect(screen, (255, 0, 0), self.hitbox, 2)
 
     def has_collided(self, enemy):
         if pygame.sprite.collide_rect(self, enemy):

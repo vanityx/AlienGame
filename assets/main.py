@@ -6,6 +6,7 @@ from assets.Enemy import Enemy
 from assets.Player import Player
 from assets.Slime import Slime
 from assets.Interface import Scoreboard
+from assets.Interface import playerInput
 
 # initialise the pygame
 pygame.init()
@@ -46,6 +47,9 @@ all_slimes = pygame.sprite.Group()
 # scoreboard
 scoreboard = Scoreboard()
 
+# player input
+player_input = playerInput()
+
 # game loop / makes sure everything appears
 running = True
 game_ended = False
@@ -56,25 +60,25 @@ while running:
     # Background image
     screen.blit(background, (0, 0))
 
+    # player keyboard input
     for event in pygame.event.get():
-        if event.type == pygame.QUIT:
+        player_input.movement(event)
+        if not player_input.game_running:
             running = False
-        elif event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_LEFT:
-                player.move(-4)
-            if event.key == pygame.K_RIGHT:
-                player.move(4)
-            if event.key == pygame.K_SPACE:
-                all_slimes.add(slime)
-                slime.fire_slime(player.positionX, player.positionY)
-            if event.key == pygame.K_r:
-                game_ended = False
-                scoreboard.score_value = 0
-                for enemy in all_enemies:
-                    enemy.reset(screen)
-        if event.type == pygame.KEYUP:
-            if event.key == pygame.K_LEFT or event.key == pygame.K_RIGHT:
-                player.move(0)
+        if player_input.controller_state == "left":
+            player.move(-4)
+        if player_input.controller_state == "right":
+            player.move(4)
+        if player_input.controller_state == "space":
+            all_slimes.add(slime)
+            slime.fire_slime(player.positionX, player.positionY)
+        if player_input.controller_state == "key_release":
+            player.move(0)
+        if player_input.restart_game:
+            game_ended = False
+            scoreboard.score_value = 0
+        else:
+            player_input.controller_state = "null"
 
     if not game_ended:
         for enemy in all_enemies:
