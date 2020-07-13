@@ -33,10 +33,15 @@ enemy2 = Enemy(random.randint(0, int(screen.get_width())), random.randint(0, int
 enemy3 = Enemy(random.randint(0, int(screen.get_width())), random.randint(0, int(screen.get_height() / 2)))
 enemy4 = Enemy(random.randint(0, int(screen.get_width())), random.randint(0, int(screen.get_height() / 2)))
 
-enemies = [enemy1, enemy2, enemy3, enemy4]
+all_enemies = pygame.sprite.Group()
+all_enemies.add(enemy1)
+all_enemies.add(enemy2)
+all_enemies.add(enemy3)
+all_enemies.add(enemy4)
 
 # slime
-slime = Slime(0, 480)
+slime = Slime(400, 560)
+all_slimes = pygame.sprite.Group()
 
 # scoreboard
 scoreboard = Scoreboard()
@@ -60,18 +65,19 @@ while running:
             if event.key == pygame.K_RIGHT:
                 player.move(4)
             if event.key == pygame.K_SPACE:
+                all_slimes.add(slime)
                 slime.fire_slime(player.positionX, player.positionY)
             if event.key == pygame.K_r:
                 game_ended = False
                 scoreboard.score_value = 0
-                for enemy in enemies:
+                for enemy in all_enemies:
                     enemy.reset(screen)
         if event.type == pygame.KEYUP:
             if event.key == pygame.K_LEFT or event.key == pygame.K_RIGHT:
                 player.move(0)
 
     if not game_ended:
-        for enemy in enemies:
+        for enemy in all_enemies:
 
             slime.move()
             slime.update(screen)
@@ -80,13 +86,14 @@ while running:
             player.check(screen)
             pygame.display.update()
             scoreboard.show_score(screen)
-            if scoreboard.check_game_end(screen, enemy.positionY):
+            if scoreboard.check_game_end(screen, enemy.rect.y):
                 game_ended = True
 
             # what to do if collision has occurs
-            enemy_rect = enemy.get_enemy_rect()
-            if slime.has_collided(enemy_rect):
+            if slime.has_collided(enemy):
+                all_slimes.remove(slime)
                 slime.slime_state = "ready"
+                slime.reset_pos()
                 scoreboard.score_value += 1
                 print(scoreboard.score_value)
                 enemy.reset(screen)

@@ -6,53 +6,43 @@ class Slime(pygame.sprite.Sprite):
 
     def __init__(self, positionX, positionY):
         pygame.sprite.Sprite.__init__(self)
-        self.slimeSprite = pygame.image.load('slime.png') # basic projectile sprite
-        self.positionX = positionX
-        self.positionY = positionY
-        self.width = int(self.slimeSprite.get_width())
-        self.height = int(self.slimeSprite.get_height())
-        self.rect = pygame.Rect(self.positionX, self.positionY, self.width, self.height)
+        self.image = pygame.image.load('slime.png')  # basic projectile sprite
+        self.rect = self.image.get_rect()
+        self.rect.x = positionX
+        self.rect.y = positionY
         self.slimeX_change = 0
         self.slimeY_change = 5
-        self.hitbox = (self.positionX, self.positionY, self.width, self.height)
+        self.hitbox = (self.rect.x, self.rect.y, self.rect.width, self.rect.height)
         self.slime_state = "ready"
 
     def move(self):
-        if self.positionY <= 0:  # reset to value of 480 so it can be fired again
+        if self.rect.y <= 0:  # reset so it can be fired again
             self.slime_state = "ready"
+            self.reset_pos()
         if self.slime_state == "fire":
-            self.fire_slime(self.positionX, self.positionY)
-            self.positionY -= self.slimeY_change
+            self.fire_slime(self.rect.x, self.rect.y)
+            self.rect.y -= self.slimeY_change
 
     def fire_slime(self, playerX, playerY):
         if self.slime_state == "ready":
-            self.positionX = int(playerX)
-            self.positionY = int(playerY)
+            self.rect.x = int(playerX)
+            self.rect.y = int(playerY)
             self.slime_state = "fire"
 
     def update(self, screen):
         if self.slime_state == "fire":
-            # rect = self.slimeSprite.get_rect()
-            # rect.center = (int(self.positionX), int(self.positionY))
-            # screen.blit(self.slimeSprite, rect)
-
-            x = int(self.positionX)
-            y = int(self.positionY)
-            screen.blit(self.slimeSprite, (x,y))
+            x = int(self.rect.x)
+            y = int(self.rect.y)
+            screen.blit(self.image, (x, y))
 
             # show hitbox
             # self.hitbox = (self.positionX, self.positionY, self.width, self.height)
             # pygame.draw.rect(screen, (255, 0, 0), self.hitbox, 2)
 
-    def has_collided(self, enemy_rect):
-        self.rect = pygame.Rect(self.positionX, self.positionY, self.width, self.height)
-        if self.rect.colliderect(enemy_rect):
+    def has_collided(self, enemy):
+        if pygame.sprite.collide_rect(self, enemy):
             return True
 
-    # def has_collided(self, enemy):
-    #     distance = math.sqrt(math.pow(enemy.positionX - self.positionX, 2)) + \
-    #                (math.pow(enemy.positionY - self.positionY, 2))
-    #     if distance < 27:
-    #         return True
-    #     else:
-    #         return False
+    def reset_pos(self):
+        self.rect.x = 400
+        self.rect.y = 569

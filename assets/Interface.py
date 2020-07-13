@@ -17,7 +17,7 @@ class Scoreboard:
         screen.blit(score_text, (self.textX, self.textY))
 
     def check_game_end(self, screen, enemy):
-        if self.score_value >= 3:
+        if self.score_value >= 10:
             self.game_won_text(screen)
             return True
         if enemy > int(screen.get_height() - 200):
@@ -46,7 +46,7 @@ class Scoreboard:
 #         self.game_running = True
 #         self.restart_game = False
 #
-#     def movement(self):
+#     def movement(self, event):
 #         for event in pygame.event.get():
 #             if event.type == pygame.QUIT:
 #                 self.game_running = False
@@ -69,3 +69,5 @@ class Scoreboard:
 #             if event.type == pygame.KEYUP:
 #                 if event.key == pygame.K_LEFT or event.key == pygame.K_RIGHT:
 #                     player.move(0)
+
+# store a state in the controller, in the keyboard input class
