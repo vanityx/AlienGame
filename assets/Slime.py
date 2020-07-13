@@ -1,5 +1,7 @@
 import pygame
 
+from pygame import mixer
+
 
 class Slime(pygame.sprite.Sprite):
 
@@ -35,6 +37,8 @@ class Slime(pygame.sprite.Sprite):
 
     def has_collided(self, enemy):
         if pygame.sprite.collide_rect(self, enemy):
+            slime_noise = mixer.Sound('slime_noise.wav')
+            slime_noise.play()
             return True
 
     def reset_pos(self):

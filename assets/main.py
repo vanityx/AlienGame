@@ -2,6 +2,7 @@ import random
 
 import pygame
 
+from pygame import mixer
 from assets.Enemy import Enemy
 from assets.Player import Player
 from assets.Slime import Slime
@@ -17,8 +18,13 @@ screen = pygame.display.set_mode((800, 600))
 # clock
 clock = pygame.time.Clock()
 
-# add background image
+# background image
 background = pygame.image.load('background.png')
+
+# background music
+mixer.music.load('game_music.wav')
+mixer.music.set_volume(0.1)
+mixer.music.play(-1)
 
 # title and icon
 pygame.display.set_caption("Alien vs Ice Cream ")
