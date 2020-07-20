@@ -3,9 +3,9 @@ import random
 import pygame
 
 from pygame import mixer
-from assets.Enemy import Enemy
-from assets.Player import Player
-from assets.Slime import Slime
+from assets.Level import Enemy
+from assets.Level import Player
+from assets.Level import Slime
 from assets.Interface import Scoreboard
 from assets.Interface import playerInput
 
@@ -39,12 +39,14 @@ enemy1 = Enemy(random.randint(0, int(screen.get_width())), random.randint(0, int
 enemy2 = Enemy(random.randint(0, int(screen.get_width())), random.randint(0, int(screen.get_height() / 2)))
 enemy3 = Enemy(random.randint(0, int(screen.get_width())), random.randint(0, int(screen.get_height() / 2)))
 enemy4 = Enemy(random.randint(0, int(screen.get_width())), random.randint(0, int(screen.get_height() / 2)))
+enemy5 = Enemy(random.randint(0, int(screen.get_width())), random.randint(0, int(screen.get_height() / 2)))
 
 all_enemies = pygame.sprite.Group()
 all_enemies.add(enemy1)
 all_enemies.add(enemy2)
 all_enemies.add(enemy3)
 all_enemies.add(enemy4)
+all_enemies.add(enemy5)
 
 # slime
 slime = Slime(400, 560)
@@ -58,7 +60,6 @@ player_input = playerInput()
 
 # game loop / makes sure everything appears
 running = True
-game_ended = False
 while running:
 
     # RGB values
@@ -67,27 +68,26 @@ while running:
     screen.blit(background, (0, 0))
 
     # player keyboard input
-    for event in pygame.event.get():
-        player_input.movement(event)
-        if not player_input.game_running:
-            running = False
-        if player_input.controller_state == "left":
-            player.move(-4)
-        if player_input.controller_state == "right":
-            player.move(4)
-        if player_input.controller_state == "space":
-            all_slimes.add(slime)
-            slime.fire_slime(player.positionX, player.positionY)
-        if player_input.controller_state == "key_release":
-            player.move(0)
-        if player_input.restart_game:
-            game_ended = False
-            scoreboard.score_value = 0
-            player_input.restart_game = False
-        else:
-            player_input.controller_state = "null"
+    player_input.movement()
+    if player_input.controller_state == "left":
+        player.move(-4)
+    if player_input.controller_state == "right":
+        player.move(4)
+    if player_input.controller_state == "space":
+        all_slimes.add(slime)
+        slime.fire_slime(player.positionX, player.positionY)
+    if player_input.controller_state == "key_release":
+        player.move(0)
+    if player_input.restart_game:
+        player_input.game_running = True
+        scoreboard.score_value = 0
+        for enemy in all_enemies:
+            enemy.reset(screen)
+        player_input.restart_game = False
+    else:
+        player_input.controller_state = "null"
 
-    if not game_ended:
+    if player_input.game_running:
         for enemy in all_enemies:
 
             slime.move()
@@ -98,7 +98,7 @@ while running:
             pygame.display.update()
             scoreboard.show_score(screen)
             if scoreboard.check_game_end(screen, enemy.rect.y):
-                game_ended = True
+                player_input.game_running = False
 
             # what to do if collision has occurs
             if slime.has_collided(enemy):

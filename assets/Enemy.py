@@ -10,7 +10,7 @@ class Enemy(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.x = positionX
         self.rect.y = positionY
-        self.enemyX_change = 6
+        self.enemyX_change = 8
         self.enemyY_change = 40
 
     def update(self, screen):
@@ -27,10 +27,10 @@ class Enemy(pygame.sprite.Sprite):
         right_boundary = screen_width - 20
         left_boundary = 20
         if self.rect.x <= left_boundary:
-            self.enemyX_change = 4
+            self.enemyX_change = 8
             self.rect.y += self.enemyY_change
         if self.rect.x >= right_boundary:
-            self.enemyX_change = -4
+            self.enemyX_change = -8
             self.rect.y += self.enemyY_change
 
         return self.rect.x, self.rect.y

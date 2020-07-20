@@ -1,3 +1,5 @@
+import sys
+
 import pygame
 
 
@@ -47,18 +49,20 @@ class playerInput:
         self.restart_game = False
         self.controller_state = "null"
 
-    def movement(self, event):
-        if event.type == pygame.QUIT:
-            self.game_running = False
-        elif event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_LEFT:
-                self.controller_state = "left"
-            if event.key == pygame.K_RIGHT:
-                self.controller_state = "right"
-            if event.key == pygame.K_SPACE:
-                self.controller_state = "space"
-            if event.key == pygame.K_r:
-                self.restart_game = True
-        if event.type == pygame.KEYUP:
-            if event.key == pygame.K_LEFT or event.key == pygame.K_RIGHT:
-                self.controller_state = "key_release"
+    def movement(self):
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                self.game_running = False
+                sys.exit()
+            elif event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_LEFT:
+                    self.controller_state = "left"
+                if event.key == pygame.K_RIGHT:
+                    self.controller_state = "right"
+                if event.key == pygame.K_SPACE:
+                    self.controller_state = "space"
+                if event.key == pygame.K_r:
+                    self.restart_game = True
+            if event.type == pygame.KEYUP:
+                if event.key == pygame.K_LEFT or event.key == pygame.K_RIGHT:
+                    self.controller_state = "key_release"
