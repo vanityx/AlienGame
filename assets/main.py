@@ -6,8 +6,9 @@ from pygame import mixer
 from assets.Level import Enemy
 from assets.Level import Player
 from assets.Level import Slime
-from assets.Interface import Scoreboard
+from assets.Interface import Scoreboard, ControllerState
 from assets.Interface import playerInput
+
 
 # initialise the pygame
 pygame.init()
@@ -69,23 +70,23 @@ while running:
 
     # player keyboard input
     player_input.movement()
-    if player_input.controller_state == "left":
+    if player_input.controller_state == ControllerState.LEFT:
         player.move(-4)
-    if player_input.controller_state == "right":
+    if player_input.controller_state == ControllerState.RIGHT:
         player.move(4)
-    if player_input.controller_state == "space":
+    if player_input.controller_state == ControllerState.SPACE:
         all_slimes.add(slime)
         slime.fire_slime(player.positionX, player.positionY)
-    if player_input.controller_state == "key_release":
+    if player_input.controller_state == ControllerState.KEY_RELEASE:
         player.move(0)
-    if player_input.restart_game:
+    if player_input.controller_state == ControllerState.RESTART_KEY:
         player_input.game_running = True
         scoreboard.score_value = 0
         for enemy in all_enemies:
             enemy.reset(screen)
-        player_input.restart_game = False
+        player_input.controller_state = ControllerState.NONE
     else:
-        player_input.controller_state = "null"
+        player_input.controller_state = ControllerState.NONE
 
     if player_input.game_running:
         for enemy in all_enemies:

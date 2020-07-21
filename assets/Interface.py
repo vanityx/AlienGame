@@ -1,4 +1,5 @@
 import sys
+from enum import Enum
 
 import pygame
 
@@ -43,11 +44,19 @@ class Scoreboard:
         screen.blit(replay_text, rect2)
 
 
+class ControllerState(Enum):
+    NONE = 0
+    LEFT = 1
+    RIGHT = 2
+    SPACE = 3
+    RESTART_KEY = 4
+    KEY_RELEASE = 5
+
+
 class playerInput:
     def __init__(self):
         self.game_running = True
-        self.restart_game = False
-        self.controller_state = "null"
+        self.controller_state = ControllerState.NONE
 
     def movement(self):
         for event in pygame.event.get():
@@ -56,13 +65,13 @@ class playerInput:
                 sys.exit()
             elif event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_LEFT:
-                    self.controller_state = "left"
+                    self.controller_state = ControllerState.LEFT
                 if event.key == pygame.K_RIGHT:
-                    self.controller_state = "right"
+                    self.controller_state = ControllerState.RIGHT
                 if event.key == pygame.K_SPACE:
-                    self.controller_state = "space"
+                    self.controller_state = ControllerState.SPACE
                 if event.key == pygame.K_r:
-                    self.restart_game = True
+                    self.controller_state = ControllerState.RESTART_KEY
             if event.type == pygame.KEYUP:
                 if event.key == pygame.K_LEFT or event.key == pygame.K_RIGHT:
-                    self.controller_state = "key_release"
+                    self.controller_state = ControllerState.KEY_RELEASE
